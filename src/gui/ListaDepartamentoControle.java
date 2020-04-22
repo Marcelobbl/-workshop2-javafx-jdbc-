@@ -59,7 +59,7 @@ public class ListaDepartamentoControle implements Initializable{
 		if (servico == null) {
 			throw new IllegalStateException("Serviço está nulo");
 		}
-		List<Departamento> list = servico.encontrarTodos();
+		List<Departamento> list = servico.buscaTodos();
 		obsLista = FXCollections.observableArrayList(list);
 		tableViewDepartamento.setItems(obsLista);
 	}
