@@ -34,8 +34,11 @@ public class MainViewController implements Initializable{
 	
 	@FXML
 	public void onMenuItemDepartamentoAction() {
-		loadView("/gui/ListaDepartamento.fxml", x -> {});
-		loadView2("/gui/ListaDepartamento.fxml", x -> {});
+		loadView("/gui/ListaDepartamento.fxml", (ListaDepartamentoControle controller) -> {
+			controller.setDepartamento(new DepartamentoServicos());
+			controller.updateTableView();
+		});
+		
 	}
 	
 	@FXML
@@ -71,30 +74,6 @@ public class MainViewController implements Initializable{
 			Alerts.showAlert("IO Exception" ,  "Error loading view" , e.getMessage(), AlertType.ERROR);
 		}
 	}
-	private synchronized <T> void loadView2(String absoluteName, Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			VBox newVBox = loader.load();
-			
-			Scene mainScene = Main.getMainScene();
-			VBox mainVBox = (VBox)((ScrollPane)mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(newVBox.getChildren());
-			
-			T controller = loader.getController();
-			initializingAction.accept(controller);
-			
-			ListaDepartamentoControle controle = loader.getController();
-			controle.setDepartamento(new DepartamentoServicos());
-			controle.updateTableView();
-			
-		}
-		catch (IOException e) {
-			Alerts.showAlert("IO Exception" ,  "Error loading view" , e.getMessage(), AlertType.ERROR);
-		}
-	}
+	
 }
 	
