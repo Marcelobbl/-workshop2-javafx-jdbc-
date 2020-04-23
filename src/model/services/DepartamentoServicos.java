@@ -13,6 +13,13 @@ public class DepartamentoServicos {
 
 	public List<Departamento> buscaTodos() {
 		return dao.buscaTodos();
-		
+	}
+	public void saveOrUpdate(Departamento obj) {
+		if (obj.getId() == null) {
+			dao.insert(obj);
+		}
+		else {
+			dao.update(obj);
+		}
 	}
 }

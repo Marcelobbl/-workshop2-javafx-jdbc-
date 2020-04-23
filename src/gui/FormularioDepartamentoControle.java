@@ -3,18 +3,26 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import db.DbException;
+import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Departamento;
+import model.services.DepartamentoServicos;
 
 public class FormularioDepartamentoControle implements Initializable{
 	
 	private Departamento entidade;
-			
+	
+	private DepartamentoServicos servico;
+	
 	@FXML
 	private TextField txtId;
 	
@@ -33,15 +41,40 @@ public class FormularioDepartamentoControle implements Initializable{
 	public void setDepartamento(Departamento entidade) {
 		this.entidade = entidade;
 	}
-
-	@FXML
-	public void onBtSaveAction() {
-		System.out.println("onBtSaveAction");
+	public void setDepartamentoServico(DepartamentoServicos servico) {
+		this.servico= servico;
 	}
 	
+
 	@FXML
-	public void onBtCancelAction() {
-		System.out.println("onBtCancelAction");		
+	public void onBtSaveAction(ActionEvent evento) {
+		if (entidade == null) {
+			throw new IllegalStateException("Entidade estava vazia");
+			}
+		if (servico == null) {
+			throw new IllegalStateException("Serviço está vazio");
+		}
+		try {
+			entidade = getFormularioDados();
+			servico.saveOrUpdate(entidade);
+			Utils.currentStage(evento).close();
+		}
+		catch (DbException e) {
+			Alerts.showAlert("Erro salvando dados", null, e.getMessage(), AlertType.ERROR);
+		}
+		
+	}
+	
+	private Departamento getFormularioDados() {
+		Departamento obj = new Departamento();
+		
+		obj.setId(Utils.tryParseToInt(txtId.getText()));
+		obj.setNomeDep(txtNome.getText());
+		return obj;
+	}
+	@FXML
+	public void onBtCancelAction(ActionEvent evento) {
+		Utils.currentStage(evento).close();		
 	}
 
 	@Override
