@@ -9,9 +9,9 @@ public interface VendedorDao {
 
 	void insert(Vendedor obj);
 	void update(Vendedor obj);
-	void delete(Integer id);
+	void deletePorId(Integer id);
 	Vendedor buscaPorId(Integer id);
-	List<Vendedor> buscaTudo();
+	List<Vendedor> buscaTodos();
 	List<Vendedor> buscaPorDepartamento(Departamento departamento);
 
 }

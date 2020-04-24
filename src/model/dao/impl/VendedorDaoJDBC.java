@@ -30,7 +30,7 @@ public class VendedorDaoJDBC implements VendedorDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO Vendedor "
+					"INSERT INTO seller "
 					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?)",
@@ -69,7 +69,7 @@ public class VendedorDaoJDBC implements VendedorDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE Vendedor "
+					"UPDATE seller "
 					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
 					+ "WHERE Id = ?");
 			
@@ -91,10 +91,10 @@ public class VendedorDaoJDBC implements VendedorDao {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void deletePorId(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM Vendedor WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
 			
 			st.setInt(1, id);
 			
@@ -114,10 +114,10 @@ public class VendedorDaoJDBC implements VendedorDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT Vendedor.*,department.Name as DepName "
-					+ "FROM Vendedor INNER JOIN department "
-					+ "ON Vendedor.DepartmentId = department.Id "
-					+ "WHERE Vendedor.Id = ?");
+					"SELECT seller.*,department.Name as DepName "
+					+ "FROM seller INNER JOIN department "
+					+ "ON seller.DepartmentId = department.Id "
+					+ "WHERE seller.Id = ?");
 			
 			st.setInt(1, id);
 			rs = st.executeQuery();
@@ -156,15 +156,15 @@ public class VendedorDaoJDBC implements VendedorDao {
 	}
 
 	@Override
-	public List<Vendedor> buscaTudo() {
+	public List<Vendedor> buscaTodos() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT Vendedor.*,department.Name as DepName "
-					+ "FROM Vendedor INNER JOIN department "
-					+ "ON Vendedor.DepartmentId = department.Id "
-					+ "ORDER BY Name");
+					"SELECT seller.*,department.Name as DepName "
+					+ "FROM seller INNER JOIN department "
+					+ "ON seller.DepartmentId = department.Id "
+					+ "ORDER BY Id");
 			
 			rs = st.executeQuery();
 			
@@ -200,11 +200,11 @@ public class VendedorDaoJDBC implements VendedorDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT Vendedor.*,department.Name as DepName "
-					+ "FROM Vendedor INNER JOIN department "
-					+ "ON Vendedor.DepartmentId = department.Id "
+					"SELECT seller.*,department.Name as DepName "
+					+ "FROM seller INNER JOIN department "
+					+ "ON seller.DepartmentId = department.Id "
 					+ "WHERE DepartmentId = ? "
-					+ "ORDER BY Name");
+					+ "ORDER BY Id");
 			
 			st.setInt(1, departamento.getId());
 			
