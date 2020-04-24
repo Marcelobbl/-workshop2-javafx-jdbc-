@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Vendedor;
+import model.services.DepartamentoServicos;
 import model.services.VendedorServicos;
 
 public class ListaVendedorControle implements Initializable, DataChangeListener {
@@ -113,7 +114,8 @@ public class ListaVendedorControle implements Initializable, DataChangeListener 
 
 			FormularioVendedorControle controle = loader.getController();
 			controle.setVendedor(obj);
-			controle.setVendedorServico(new VendedorServicos());
+			controle.setServicos(new VendedorServicos(), new DepartamentoServicos());
+			controle.loadAssociatedObjects();
 			controle.subscribeChangeListener(this);
 			controle.updateFormularioDados();
 
@@ -125,6 +127,7 @@ public class ListaVendedorControle implements Initializable, DataChangeListener 
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
